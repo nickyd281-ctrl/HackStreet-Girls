@@ -1,0 +1,93 @@
+<html lang=""en">
+<head> 
+    <meta charset=""UTF-8">
+    <meta name=""viewport" content="width=device-width, initial-scale=1. 0">
+    <title>Gemini AI Prompt Example</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #response-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+        }
+
+        .loading {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ask Gemini (Secure Server-Side API Call</h1>
+    <textarea id="prompt" placeholder="Enter your question here..."></textarea>
+<button onclick="sendPrompt()">Generate Response</button>
+<h2>AI Response</h2>
+<div id="response-container">
+    </div>
+    <script>
+        
+        async function sendPrompt() {
+            const promptElement = document.getElementById('prompt');
+            const responseContainer = document.getElementById('response-container');
+            const promptValue = promptElement.value.trim();
+
+            if (!promptValue) {
+                responseContainer.innerHTML = 'Please enter a prompt.';
+                return;
+            }
+
+            // Display loading state
+            responseContainer.innerHTML = '<span class="loading">Generating response...</span>';
+
+            try {
+                // Send the prompt to the backend server
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: promptValue })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Display the successful result
+                    responseContainer.textContent = data.result;
+                } else {
+                    // Display error from the server
+                    responseContainer.innerHTML = `<strong>Error:</strong> ${data.error || 'Unknown server error'}`;
+                }
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                responseContainer.innerHTML = `<strong>Network Error:</strong> Could not connect to the server. Is the server running?`;
+            }
+        }
+    
+    </script>
+</body>
+</html>
