@@ -1,0 +1,7 @@
+<dependencies>
+    <dependency>
+        <groupId>com.google.genai</groupId>
+        <artifactId>java-genai</artifactId>
+        <version>0.1.0</version> 
+    </dependency>
+</dependencies>
